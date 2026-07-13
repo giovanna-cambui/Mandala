@@ -1,5 +1,12 @@
 name = "painelmandala"
 compatibility_date = "2026-07-13"
+main = "worker.js"
+
 [assets]
 directory = "."
+binding = "ASSETS"
 not_found_handling = "single-page-application"
+
+[[kv_namespaces]]
+binding = "STORAGE"
+id = "b068db765ad94f85918e2f1704d6b9fc"
