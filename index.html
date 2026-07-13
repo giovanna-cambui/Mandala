@@ -1000,12 +1000,12 @@ async function renderAnalyticsSection(sector, view){
         reportIds.forEach(rid=>{
           const p = parsedByReport[rid]; if(!p) return;
           const f = findFieldForDim(p.fields, dim.key);
-          if(f) p.data.forEach(row=>{ if(row[f]!==undefined && row[f]!=='') 
+          if(f) p.data.forEach(row=>{ if(row[f]!==undefined && row[f]!=='') {
 const val = String(row[f]||'');
-const dim = FILTER_DIM_ALIASES.find(d=>d.key===dimKey);
-const display = (dim && dim.key==='mes') ? formatMesFromDate(val) : val;
+const matchedDim = FILTER_DIM_ALIASES.find(d=>d.key===dim.key);
+      const display = (matchedDim && matchedDim.key==='mes') ? formatMesFromDate(val) : val;
 values.add(display);
- });
+          }  });
         });
         const opts = ['<option value="">'+dim.label+' (todos)</option>'].concat([...values].sort().map(v=>'<option value="'+v+'"'+(currentFilters[dim.key]===v?' selected':'')+'>'+v+'</option>'));
         filterHtml += '<select onchange="setFilter(\''+filterKey+'\',\''+dim.key+'\',this.value)">'+opts.join('')+'</select>';
