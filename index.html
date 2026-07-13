@@ -558,12 +558,12 @@ function slugify(s){ return norm(s).replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/
    PERSISTÊNCIA
    ============================================================ */
 async function loadShared(key, fallback){
-  try{ const r = await window.storage.get(key, true); return r ? JSON.parse(r.value) : fallback; }
+  try{ const res = await fetch('/api/storage?key=' + encodeURIComponent(key)); if(!res.ok) return fallback; const data = await res.json(); return data.value ? JSON.parse(data.value) : fallback; }
   catch(e){ return fallback; }
 }
-async function saveShared(key, value){
-  try{ await window.storage.set(key, JSON.stringify(value), true); }catch(e){ console.error('storage error', e); }
-}
+  async function saveShared(key, value){
+    try{ await fetch('/api/storage?key=' + encodeURIComponent(key), { method:'POST', body: JSON.stringify(value) }); }catch(e){ console.error('storage error', e); }
+  }
 
 const DEFAULT_USERS = [
   {name:'Giovanna', email:'gi@pwrgestao.com.br', nivel:'admin', sectors:[], status:'Ativo', passwordHash:'a6ae4d0e8d09751df786b413204b28a53e9b2835fd72b3acdf07e3adccc5de34'},
